@@ -2,14 +2,23 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.article.service import ArticleService
+from app.cache.base import Cache
+from app.cache.factory import get_cache
 from app.common.schemas import ArticleSummary, CategoryCount
 from app.db import get_db
+from app.search.service import SearchService
 
 router = APIRouter(prefix="/api", tags=["article"])
 
 
 def get_article_service(db: Session = Depends(get_db)) -> ArticleService:
     return ArticleService(db)
+
+
+def get_search_service(
+    db: Session = Depends(get_db), cache: Cache = Depends(get_cache)
+) -> SearchService:
+    return SearchService(db, cache)
 
 
 @router.get(
@@ -36,6 +45,19 @@ def get_article(
     article_id: int, svc: ArticleService = Depends(get_article_service)
 ) -> ArticleSummary:
     return svc.get(article_id)
+
+
+@router.get(
+    "/articles/{article_id}/related",
+    response_model=list[ArticleSummary],
+    summary="語意相關新聞",
+)
+def related_articles(
+    article_id: int,
+    limit: int = Query(3, le=10, description="回傳筆數"),
+    svc: SearchService = Depends(get_search_service),
+) -> list[ArticleSummary]:
+    return svc.related(article_id, limit)
 
 
 @router.get(

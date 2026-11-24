@@ -1,8 +1,5 @@
 # Phase 1：article
 
-- 完成日期：2026-11-24
-- 對應計畫：development-order.md 階段 1
-
 ## 範圍
 
 填好 `article` 模組（repository、service、router、例外處理），讓 PRD 第 7 節的三個端點可用（`GET /api/articles`、`GET /api/articles/{id}`、`GET /api/categories`）。`/related` 屬於階段 4（cache + search）範圍，這階段不做。

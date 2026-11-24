@@ -1,8 +1,5 @@
 # Phase 3：enrichment
 
-- 完成日期：2026-11-24
-- 對應計畫：development-order.md 階段 3
-
 ## 範圍
 
 接上真的 `LLMClient`，補狀態機與重試邏輯，對應 PRD 第 11 節 F2 兩項驗收標準。

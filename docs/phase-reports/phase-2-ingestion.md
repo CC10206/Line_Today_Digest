@@ -1,8 +1,5 @@
 # Phase 2：ingestion
 
-- 完成日期：2026-11-24
-- 對應計畫：development-order.md 階段 2
-
 ## 範圍
 
 RSS 抓取、HTML 清理、依 `url` 去重、admin 手動觸發，對應 PRD 第 11 節 F1 兩項驗收標準。
