@@ -3,8 +3,8 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-import app.article.models  # noqa: F401 ensure models registered on Base.metadata
-import app.tracking.models  # noqa: F401
+import app.article.models as _article_models  # noqa: F401
+import app.tracking.models as _tracking_models  # noqa: F401
 from app.config import settings
 from app.db import Base
 

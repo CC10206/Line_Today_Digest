@@ -4,7 +4,6 @@ from fastapi import Depends, FastAPI, Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
 
 

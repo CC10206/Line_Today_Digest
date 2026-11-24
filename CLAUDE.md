@@ -8,3 +8,4 @@
 - Phase 2 功能不要提前實作，只保留 PRD 第 5.2 節列出的擴充點。
 - 指令：uv run pytest、uv run ruff check .、docker compose up -d db、uv run alembic upgrade head、uv run uvicorn app.main:app --reload
 - 以 superpowers 進行敏捷式開發，不走TDD，不自行commit，實作推理過程以中文呈現。
+- 依 docs/superpowers/plans 的開發順序計畫，每完成一個階段，依 docs/phase-reports/README.md 的範本在 docs/phase-reports/ 新增一份該階段的實作紀錄，再進入下一階段。
