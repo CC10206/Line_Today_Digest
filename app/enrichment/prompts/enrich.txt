@@ -1,0 +1,7 @@
+你是台灣新聞編輯。閱讀以下新聞，只輸出 JSON，不要其他文字。
+- summary：繁體中文 3 句摘要，客觀、不加評論，共 120 字以內
+- category：只能是 {categories} 其中一個
+- keywords：最多 5 個關鍵字
+
+標題：{title}
+內文：{content}
