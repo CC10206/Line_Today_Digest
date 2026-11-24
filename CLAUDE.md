@@ -7,3 +7,4 @@
 - 密鑰只用環境變數，禁止寫進程式或 commit。
 - Phase 2 功能不要提前實作，只保留 PRD 第 5.2 節列出的擴充點。
 - 指令：uv run pytest、uv run ruff check .、docker compose up -d db、uv run alembic upgrade head、uv run uvicorn app.main:app --reload
+- 以 superpowers 進行敏捷式開發，不走TDD，不自行commit，實作推理過程以中文呈現。

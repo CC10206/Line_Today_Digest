@@ -1,8 +1,11 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, Response
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.db import get_db
 
 
 @asynccontextmanager
@@ -20,6 +23,10 @@ app = FastAPI(title="TodayDigest", lifespan=lifespan)
 
 
 @app.get("/healthz")
-def healthz():
-    # TODO: 檢查 DB 連線狀態
+def healthz(response: Response, db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception:
+        response.status_code = 503
+        return {"status": "error"}
     return {"status": "ok"}
