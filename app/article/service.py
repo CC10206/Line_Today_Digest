@@ -1,11 +1,9 @@
 from sqlalchemy.orm import Session
 
-from app.article.models import Category
+from app.article.models import Article, Category
 from app.article.repository import ArticleRepository
 from app.common.errors import ArticleNotFound
 from app.common.schemas import ArticleSummary, CategoryCount
-
-# claim_pending(limit) 會在階段 3（enrichment）加進來。
 
 
 class ArticleService:
@@ -29,3 +27,6 @@ class ArticleService:
     def categories(self) -> list[CategoryCount]:
         counts = self.repo.category_counts()
         return [CategoryCount(category=c.value, count=counts.get(c.value, 0)) for c in Category]
+
+    def claim_pending(self, limit: int) -> list[Article]:
+        return self.repo.claim_pending(limit)

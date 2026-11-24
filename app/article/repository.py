@@ -4,8 +4,6 @@ from sqlalchemy.orm import Session
 
 from app.article.models import Article
 
-# claim_pending(limit) 給階段 3（enrichment）用，到那個階段再加進來。
-
 
 class ArticleRepository:
     def __init__(self, db: Session):
@@ -28,6 +26,10 @@ class ArticleRepository:
             .group_by(Article.category)
         )
         return dict(self.db.execute(stmt).all())
+
+    def claim_pending(self, limit: int) -> list[Article]:
+        stmt = select(Article).where(Article.status == "PENDING").order_by(Article.created_at).limit(limit)
+        return list(self.db.scalars(stmt))
 
     def upsert_on_conflict(self, rows: list[dict]) -> int:
         if not rows:

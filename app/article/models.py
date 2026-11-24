@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import StrEnum
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import ARRAY, Text
+from sqlalchemy import ARRAY, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -38,5 +38,5 @@ class Article(Base):
     status: Mapped[str] = mapped_column(default="PENDING")
     retry_count: Mapped[int] = mapped_column(default=0)
     last_error: Mapped[str | None]
-    created_at: Mapped[datetime]
+    created_at: Mapped[datetime] = mapped_column(server_default=func.now())
     enriched_at: Mapped[datetime | None]

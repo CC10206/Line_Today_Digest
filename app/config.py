@@ -12,14 +12,15 @@ class Feed(BaseModel):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
-    openai_api_key: str
+    gemini_api_key: str
     line_channel_secret: str
     line_channel_access_token: str
     admin_token: str
     database_url: str
 
-    chat_model: str = "gpt-4o-mini"
-    embedding_model: str = "text-embedding-3-small"
+    chat_model: str = "gemini-3.5-flash-lite"
+    embedding_model: str = "gemini-embedding-001"
+    embedding_dimension: int = 1536  # 要跟 migrations/0001_init.py 的 vector(1536) 一致
     enrich_batch_size: int = 20
     enrich_max_retry: int = 3
     ingest_interval_minutes: int = 30
