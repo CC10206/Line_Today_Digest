@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.admin.router import router as admin_router
 from app.article.router import router as article_router
 from app.common.errors import register_exception_handlers
 from app.db import get_db
@@ -18,9 +19,9 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="TodayDigest", lifespan=lifespan)
 register_exception_handlers(app)
 app.include_router(article_router)
+app.include_router(admin_router)
 
 # TODO: 掛上剩下的模組 router
-# app.include_router(admin.router)
 # app.include_router(linebot.router)
 
 

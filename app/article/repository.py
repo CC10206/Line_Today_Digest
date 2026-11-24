@@ -1,10 +1,10 @@
 from sqlalchemy import func, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
 from app.article.models import Article
 
-# claim_pending(limit) 給階段 3（enrichment）用、upsert_on_conflict(url) 給階段 2（ingestion）用，
-# 到那兩個階段再加進來。
+# claim_pending(limit) 給階段 3（enrichment）用，到那個階段再加進來。
 
 
 class ArticleRepository:
@@ -28,3 +28,16 @@ class ArticleRepository:
             .group_by(Article.category)
         )
         return dict(self.db.execute(stmt).all())
+
+    def upsert_on_conflict(self, rows: list[dict]) -> int:
+        if not rows:
+            return 0
+        stmt = (
+            pg_insert(Article)
+            .values(rows)
+            .on_conflict_do_nothing(index_elements=["url"])
+            .returning(Article.id)
+        )
+        inserted = self.db.execute(stmt).fetchall()
+        self.db.commit()
+        return len(inserted)

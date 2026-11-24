@@ -28,8 +28,8 @@ class Settings(BaseSettings):
     recommender: Literal["latest"] = "latest"  # Phase 2 加 "embedding"
     enable_scheduler: bool = True
     feeds: list[Feed] = [
-        Feed(name="cna", url="<RSS 網址，開發時確認>"),
-        Feed(name="<第二個來源>", url="<RSS 網址>"),
+        Feed(name="cna", url="https://feedx.net/rss/cna.xml"),
+        Feed(name="ltn", url="https://news.ltn.com.tw/rss/all.xml"),
     ]
 
 
