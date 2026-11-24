@@ -29,6 +29,9 @@ dev = [
 [tool.ruff]
 line-length = 100
 
+[tool.ruff.lint]
+ignore = ["B008"]  # FastAPI 的 Depends() 慣用寫法，官方文件建議忽略這條規則
+
 [tool.hatch.build.targets.wheel]
 packages = ["app"]
 
