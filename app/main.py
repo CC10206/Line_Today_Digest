@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import Depends, FastAPI, Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -7,14 +8,26 @@ from sqlalchemy.orm import Session
 from app.admin.router import router as admin_router
 from app.article.router import router as article_router
 from app.common.errors import register_exception_handlers
+from app.config import settings
 from app.db import get_db
+from app.enrichment.jobs import run_enrich_job
+from app.ingestion.jobs import run_ingest_job
 from app.recommendation.router import router as recommendation_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # TODO: 啟動 APScheduler（ingestion 30 分、enrichment 60 秒），受 settings.enable_scheduler 控制
+    scheduler = None
+    if settings.enable_scheduler:
+        scheduler = BackgroundScheduler()
+        scheduler.add_job(
+            run_ingest_job, "interval", minutes=settings.ingest_interval_minutes, id="ingest"
+        )
+        scheduler.add_job(run_enrich_job, "interval", seconds=60, id="enrich")
+        scheduler.start()
     yield
+    if scheduler is not None:
+        scheduler.shutdown()
 
 
 app = FastAPI(title="TodayDigest", lifespan=lifespan)

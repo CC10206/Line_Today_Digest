@@ -1,1 +1,7 @@
-# TODO: APScheduler job，每 30 分鐘呼叫 ingestion.service；供 /api/admin/ingest 共用
+from app.db import SessionLocal
+from app.ingestion.service import ingest
+
+
+def run_ingest_job() -> None:
+    with SessionLocal() as db:
+        ingest(db)
