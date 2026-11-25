@@ -8,6 +8,11 @@ AI 新聞摘要 + 相關新聞 + LINE Bot（MVP）。詳細規格見 [docs/PRD.m
 
 ![系統架構圖](docs/architecture.svg)
 
+## 設計決策
+
+- **相關新聞相似度門檻**：`/related` 只回傳相似度 ≥ 0.6（`app/config.py` 的 `related_min_similarity`）的候選，低於門檻寧可少顯示、甚至回傳 0 篇，也不硬湊不相關的文章。0.6 是用全部真實資料實測得出的經驗值（真正相關的新聞群聚多落在 0.6 以上，明顯不相關的落在 0.55 以下），細節見 [docs/phase-reports/phase-4-cache-search-followup.md](docs/phase-reports/phase-4-cache-search-followup.md)。
+- **Ingestion 是整批抓取，非增量**：排程每 30 分鐘把每個 RSS 來源整份 feed 重新抓一次，靠 `url` 的 `ON CONFLICT DO NOTHING` 去重，而非記錄上次抓取位置做增量更新；單一來源連線失敗只記 log，不影響其他來源。
+
 ## 啟動
 
 ```bash
