@@ -6,7 +6,7 @@ AI 新聞摘要 + 相關新聞 + LINE Bot（MVP）。詳細規格見 [docs/PRD.m
 
 純後端服務（Python / FastAPI）：RSS 抓取 → LLM 摘要/分類/Embedding → pgvector 相關新聞 → LINE Bot / REST API。
 
-見 `docs/architecture.png`（待補）。
+![系統架構圖](docs/architecture.svg)
 
 ## 啟動
 

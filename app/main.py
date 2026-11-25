@@ -46,7 +46,7 @@ app.include_router(linebot_router)
 def healthz(response: Response, db: Session = Depends(get_db)):
     try:
         db.execute(text("SELECT 1"))
-    except Exception:
+    except Exception:  # noqa: BLE001 - 任何 DB 連線問題都要降級成 503，不分例外種類
         response.status_code = 503
         return {"status": "error"}
     return {"status": "ok"}

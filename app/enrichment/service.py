@@ -24,7 +24,7 @@ def enrich_pending(db: Session, llm: LLMClient) -> EnrichStats:
             a.embedding = llm.embed(f"{a.title}\n{r.summary}")
             a.status, a.enriched_at = "ENRICHED", datetime.now(UTC)
             stats.ok += 1
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - LLM 供應商可能拋各種例外，都要落到 retry 狀態機
             a.retry_count += 1
             a.last_error = str(e)[:500]
             a.status = "FAILED" if a.retry_count >= settings.enrich_max_retry else "PENDING"

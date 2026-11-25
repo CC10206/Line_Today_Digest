@@ -9,7 +9,24 @@ if TYPE_CHECKING:
 
 
 class ArticleSummary(BaseModel):
-    model_config = ConfigDict(populate_by_name=True, alias_generator=to_camel)
+    model_config = ConfigDict(
+        populate_by_name=True,
+        alias_generator=to_camel,
+        json_schema_extra={
+            "example": {
+                "id": 128,
+                "title": "範例新聞標題",
+                "summary": "第一句。第二句。第三句。",
+                "category": "財經",
+                "keywords": ["關鍵字A", "關鍵字B"],
+                "source": "cna",
+                "url": "https://www.cna.com.tw/news/example.aspx",
+                "imageUrl": None,
+                "publishedAt": "2026-11-24T09:00:00+08:00",
+                "similarity": 0.83,
+            }
+        },
+    )
 
     id: int
     title: str
@@ -39,5 +56,7 @@ class ArticleSummary(BaseModel):
 
 
 class CategoryCount(BaseModel):
+    model_config = ConfigDict(json_schema_extra={"example": {"category": "科技", "count": 42}})
+
     category: str
     count: int

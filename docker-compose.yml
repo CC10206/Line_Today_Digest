@@ -18,6 +18,10 @@ services:
   app:
     build: .
     env_file: .env
+    environment:
+      # .env 的 DATABASE_URL 給本機 `uv run uvicorn` 開發用（host 連 localhost:5432）；
+      # 容器之間要用 compose 的服務名稱 `db` 當主機名，這裡覆寫掉。
+      DATABASE_URL: postgresql+psycopg://todaydigest:todaydigest@db:5432/todaydigest
     depends_on:
       db:
         condition: service_healthy
