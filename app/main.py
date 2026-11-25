@@ -12,11 +12,14 @@ from app.config import settings
 from app.db import get_db
 from app.enrichment.jobs import run_enrich_job
 from app.ingestion.jobs import run_ingest_job
+from app.linebot.router import close_line_api, init_line_api
+from app.linebot.router import router as linebot_router
 from app.recommendation.router import router as recommendation_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await init_line_api()
     scheduler = None
     if settings.enable_scheduler:
         scheduler = BackgroundScheduler()
@@ -28,6 +31,7 @@ async def lifespan(app: FastAPI):
     yield
     if scheduler is not None:
         scheduler.shutdown()
+    await close_line_api()
 
 
 app = FastAPI(title="TodayDigest", lifespan=lifespan)
@@ -35,9 +39,7 @@ register_exception_handlers(app)
 app.include_router(article_router)
 app.include_router(admin_router)
 app.include_router(recommendation_router)
-
-# TODO: 掛上剩下的模組 router
-# app.include_router(linebot.router)
+app.include_router(linebot_router)
 
 
 @app.get("/healthz")

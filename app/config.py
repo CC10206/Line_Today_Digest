@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     enrich_max_retry: int = 3
     ingest_interval_minutes: int = 30
     related_window_days: int = 7
+    related_min_similarity: float = 0.6
     cache_backend: Literal["memory", "redis"] = "memory"
     recommender: Literal["latest"] = "latest"  # Phase 2 加 "embedding"
     enable_scheduler: bool = True

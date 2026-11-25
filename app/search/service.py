@@ -29,6 +29,7 @@ class SearchService:
                 Article.status == "ENRICHED",
                 Article.published_at
                 > func.now() - timedelta(days=settings.related_window_days),
+                dist <= (1 - settings.related_min_similarity),
             )
             .order_by(dist)
             .limit(limit)
